@@ -41,7 +41,7 @@ end
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -54,6 +54,9 @@ modkey = "Mod4"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
+    awful.layout.suit.max,
+    --awful.layout.suit.max.fullscreen,
+    --awful.layout.suit.magnifier,
     awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
@@ -63,9 +66,9 @@ awful.layout.layouts = {
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
     awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
+    --awful.layout.suit.max,
+    --awful.layout.suit.max.fullscreen,
+    --awful.layout.suit.magnifier,
     awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
@@ -360,7 +363,15 @@ clientkeys = awful.util.table.join(
             c.maximized = not c.maximized
             c:raise()
         end ,
-        {description = "maximize", group = "client"})
+        {description = "maximize", group = "client"}),
+    awful.key({ modkey, "Control" }, "s",
+        function () awful.util.spawn("bash -c 'x-terminal-emulator -e ssh elwood@`xsel`'") end),
+    awful.key({ modkey, "Control" }, "w",
+        function () awful.util.spawn("bash -c 'rdesktop `xsel` -r clipboard:CLIPBOARD -r disk:shared=/home/elwood/windows-shared -r sound:local -u root -p nimbula -K -g 1920x1000'") end),
+    awful.key({ modkey, "Control" }, "t",
+        function () awful.util.spawn("bash -c 'xdg-open https://st.yandex-team.ru/`xsel` '") end),
+    awful.key({ modkey, "Control" }, "x",
+        function () awful.util.spawn("lock.sh") end)
 )
 
 -- Bind all key numbers to tags.
@@ -466,7 +477,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = true }
+      }, properties = { titlebars_enabled = false }
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
@@ -542,4 +553,17 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+os.execute("pgrep unity-settings-daemon || unity-settings-daemon&")
+
+os.execute("setxkbmap -layout \'\' -option")
+os.execute("setxkbmap -layout \'us,ru\' -option \'grp:ctrl_shift_toggle\'")
+os.execute("setxkbmap -option compose:ralt")
+
+-- Start nm-applet if not started already 
+os.execute("pgrep nm-applet || nm-applet&")
+os.execute("xset r rate 220 30")
+
+os.execute("gnome-screensaver-command --exit")
+
 -- }}}
