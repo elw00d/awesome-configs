@@ -14,6 +14,8 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 require("battery")
 require("volume")
 
+local lain = require("lain")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -58,6 +60,7 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.max,
+    lain.layout.termfair,
     --awful.layout.suit.max.fullscreen,
     --awful.layout.suit.magnifier,
     awful.layout.suit.floating,
@@ -227,6 +230,15 @@ awful.screen.connect_for_each_screen(function(s)
             s.mylayoutbox,
         },
     }
+
+    s.quake = lain.util.quake({ 
+	--app = 'xterm -fa "Sans Mono:style=Book:antialias=false:pixelsize=14" -bg "#222222"',
+	app = 'gnome-terminal',
+	extra = "--disable-factory",  -- Fixes gnome-terminal's unwanted existing windows reusing behavior
+	argname = "--name %s",
+	height = 0.7,
+	border = 0
+    })
 end)
 -- }}}
 
@@ -340,7 +352,10 @@ globalkeys = awful.util.table.join(
     -- Volume control
     awful.key({ modkey}, "[", function () awful.spawn("amixer -D pulse sset Master 5%-") end, {description = "increase volume", group = "custom"}),
     awful.key({ modkey}, "]", function () awful.spawn("amixer -D pulse sset Master 5%+") end, {description = "decrease volume", group = "custom"}),
-    awful.key({ modkey}, "\\", function () awful.spawn("amixer -D pulse set Master +1 toggle") end, {description = "mute volume", group = "custom"})
+    awful.key({ modkey}, "\\", function () awful.spawn("amixer -D pulse set Master +1 toggle") end, {description = "mute volume", group = "custom"}),
+
+    -- Quake console on modkey + '~'
+    awful.key({ modkey}, "`", function () awful.screen.focused().quake:toggle() end)
 )
 
 clientkeys = awful.util.table.join(
