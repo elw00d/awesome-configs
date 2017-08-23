@@ -232,12 +232,12 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     s.quake = lain.util.quake({ 
-	--app = 'xterm -fa "Sans Mono:style=Book:antialias=false:pixelsize=14" -bg "#222222"',
-	app = 'gnome-terminal',
-	extra = "--disable-factory",  -- Fixes gnome-terminal's unwanted existing windows reusing behavior
-	argname = "--name %s",
-	height = 0.7,
-	border = 0
+        --app = 'xterm -fa "Sans Mono:style=Book:antialias=false:pixelsize=14" -bg "#222222"',
+        app = 'gnome-terminal',
+        extra = "--disable-factory --profile=Quake",  -- Fixes gnome-terminal's unwanted existing windows reusing behavior
+        argname = "--name %s",
+        height = 0.653, -- 749  -- To exactly match with gnome-terminal 'resolution' in laptop mode
+        border = 3
     })
 end)
 -- }}}
@@ -333,8 +333,9 @@ globalkeys = awful.util.table.join(
               {description = "restore minimized", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
+    --awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+    --          {description = "run prompt", group = "launcher"}),
+    awful.key({modkey}, "r", function() awful.spawn("gmrun") end),
 
     awful.key({ modkey }, "x",
               function ()
@@ -389,13 +390,17 @@ clientkeys = awful.util.table.join(
         end ,
         {description = "maximize", group = "client"}),
     awful.key({ modkey, "Control" }, "s",
-        function () awful.util.spawn("bash -c 'x-terminal-emulator -e ssh elwood@`xsel`'") end),
+        function () awful.util.spawn("bash -c 'x-terminal-emulator -e ssh -o StrictHostKeyChecking=no elwood@`xsel`'") end),
     awful.key({ modkey, "Control" }, "w",
         function () awful.util.spawn("bash -c 'rdesktop `xsel` -r clipboard:CLIPBOARD -r disk:shared=/home/elwood/windows-shared -r sound:local -u root -p nimbula -K -g 1920x1000'") end),
     awful.key({ modkey, "Control" }, "t",
         function () awful.util.spawn("bash -c 'xdg-open https://st.yandex-team.ru/`xsel` '") end),
     awful.key({ modkey, "Control" }, "x",
-        function () awful.util.spawn("lock.sh") end)
+        function () awful.util.spawn("lock.sh") end),
+    awful.key({ "Shift" }, "Print",
+        -- Take screenshot of selected area and store it to clipboard
+        -- Need delay https://superuser.com/questions/738545/how-to-take-screenshotusing-selection-in-awesome-wm-via-scrot
+        function () awful.spawn.with_shell("sleep 0.2 && gnome-screenshot -a -c") end)
 )
 
 -- Bind all key numbers to tags.
@@ -578,7 +583,11 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
+-- После запуска unity-settings-daemon нужно некоторое время подождать, прежде чем
+-- менять настройки клавиатуры, иначе unity-settings-daemon может поменять их обратно
+-- Наверное, можно как-то по логам демона понять, что он запустился, но пока сделал по-простому
 os.execute("pgrep unity-settings-daemon || unity-settings-daemon&")
+os.execute("sleep 1.5")
 
 os.execute("setxkbmap -layout \'\' -option")
 os.execute("setxkbmap -layout \'us,ru\' -option \'grp:ctrl_shift_toggle\'")
@@ -589,5 +598,7 @@ os.execute("pgrep nm-applet || nm-applet&")
 os.execute("xset r rate 220 30")
 
 os.execute("gnome-screensaver-command --exit")
+
+awful.spawn.with_shell("dropbox start")
 
 -- }}}
