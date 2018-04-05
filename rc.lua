@@ -49,7 +49,8 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "gnome-terminal"
+--terminal = "gnome-terminal"
+terminal = "konsole"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -235,14 +236,15 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 
-    s.quake = lain.util.quake({ 
+    --s.quake = lain.util.quake({ 
         --app = 'xterm -fa "Sans Mono:style=Book:antialias=false:pixelsize=14" -bg "#222222"',
-        app = 'gnome-terminal',
-        extra = "--disable-factory --profile=Quake",  -- Fixes gnome-terminal's unwanted existing windows reusing behavior
-        argname = "--name %s",
-        height = 0.653, -- 749  -- To exactly match with gnome-terminal 'resolution' in laptop mode
-        border = 3
-    })
+    --    app = 'gnome-terminal',
+    --    extra = "--disable-factory --profile=Quake",  -- Fixes gnome-terminal's unwanted existing windows reusing behavior
+    --    argname = "--name %s",
+    --    height = 0.653, -- 749  -- To exactly match with gnome-terminal 'resolution' in laptop mode
+    --    border = 3,
+--	followtag = true
+--    })
 end)
 -- }}}
 
@@ -357,10 +359,10 @@ globalkeys = gears.table.join(
     -- Volume control
     awful.key({ modkey}, "[", function () awful.spawn("amixer -D pulse sset Master 5%-") end, {description = "increase volume", group = "custom"}),
     awful.key({ modkey}, "]", function () awful.spawn("amixer -D pulse sset Master 5%+") end, {description = "decrease volume", group = "custom"}),
-    awful.key({ modkey}, "\\", function () awful.spawn("amixer -D pulse set Master +1 toggle") end, {description = "mute volume", group = "custom"}),
+    awful.key({ modkey}, "\\", function () awful.spawn("amixer -D pulse set Master +1 toggle") end, {description = "mute volume", group = "custom"})
 
     -- Quake console on modkey + '~'
-    awful.key({ modkey}, "`", function () awful.screen.focused().quake:toggle() end)
+    --awful.key({ modkey}, "`", function () awful.screen.focused().quake:toggle() end)
 )
 
 clientkeys = gears.table.join(
@@ -406,7 +408,7 @@ clientkeys = gears.table.join(
         end ,
         {description = "(un)maximize horizontally", group = "client"}),
     awful.key({ modkey, "Control" }, "s",
-        function () awful.util.spawn("bash -c 'x-terminal-emulator -e ssh -o StrictHostKeyChecking=no elwood@`xsel`'") end),
+        function () awful.util.spawn("bash -c 'konsole -e ssh -o StrictHostKeyChecking=no elwood@`xsel`'") end),
     awful.key({ modkey, "Control" }, "w",
         function () awful.util.spawn("bash -c 'rdesktop `xsel` -r clipboard:CLIPBOARD -r disk:shared=/home/elwood/windows-shared -r sound:local -u root -p nimbula -K -g 1920x1000'") end),
     awful.key({ modkey, "Control" }, "t",
@@ -603,7 +605,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- менять настройки клавиатуры, иначе unity-settings-daemon может поменять их обратно
 -- Наверное, можно как-то по логам демона понять, что он запустился, но пока сделал по-простому
 os.execute("pgrep unity-settings-daemon || unity-settings-daemon&")
-os.execute("sleep 1.5")
+--os.execute("sleep 1.5")
 
 os.execute("setxkbmap -layout \'\' -option")
 os.execute("setxkbmap -layout \'us,ru\' -option \'grp:ctrl_shift_toggle\'")
@@ -618,5 +620,7 @@ os.execute("gnome-screensaver-command --exit")
 awful.spawn.with_shell("dropbox start")
 
 os.execute("indicator-multiload --display=:0 --trayicon&")
+
+--awful.spawn.with_shell("pgrep -f guake.main || guake&")
 
 -- }}}
