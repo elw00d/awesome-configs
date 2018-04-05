@@ -1,7 +1,7 @@
 local color      = require( "gears.color"    )
 local surface    = require( "gears.surface"  )
 local blind      = require( "blind"          )
-local radical    = require( "radical"        )
+--local radical    = require( "radical"        )
 local pixmap     = require( "blind.common.pixmap")
 local pattern    = require( "blind.common.pattern2")
 local wall       = require( "gears.wallpaper" )
@@ -105,7 +105,7 @@ theme.apps_title = "Start"
 
 theme.default_height = default_height
 
-theme.font = "C64 Pro Mono, Regular 6"
+theme.font = "C64 Pro Mono, Regular 10"
 
 
 theme.path = path
@@ -140,6 +140,7 @@ theme.fg = blind {
 -- Other
 theme.awesome_icon         = path .."Icon/win9x.png"
 theme.show_desktop_icon    = path .."Icon/win9x_desk.png"
+theme.big_logo             = path .."Icon/windows-logo-filled.png"
 theme.systray_icon_spacing = 4
 theme.button_bg_normal     = color.create_png_pattern(path .."Icon/bg/menu_bg_scifi.png"       )
 -- theme.enable_glow          = true
@@ -149,7 +150,7 @@ theme.naughty_border_color = theme.fg_normal
 -- theme.bg_dock              = d_mask(blind_pat.sur.thick_stripe(back,"#0a0a0a",14,default_height,true))
 theme.fg_dock_1            = "#1889F2"
 theme.fg_dock_2            = "#1889F2"
-theme.useless_gap = 3
+theme.useless_gap = 0
 theme.allinone_margins = 6
 
 -- Border
@@ -166,7 +167,7 @@ theme.border = blind {
 
 -- Taglist
 theme.taglist = blind {
-    item_style    = radical.item.style.classic.vertical,
+    --item_style    = radical.item.style.classic.vertical,
     bgimage = blind {
         hover     = win9x_button_bg,
         selected  = win9x_button_pressed,
@@ -210,7 +211,7 @@ theme.taglist_default_margins = {
 
 -- Tasklist
 theme.tasklist = blind {
-    item_style              = radical.item.style.basic,
+    --item_style              = radical.item.style.basic,
     fg_focus                = "#000000",
     fg_hover                = back,
     underlay_bg_urgent      = dit_20,
@@ -257,18 +258,18 @@ theme.menu = blind {
     bgimage_normal    = win9x_button_bg,
     bg_highlight = dit_40,
     border_color = fore,
-    default_style = radical.style.classic,
-    default_item_style = radical.item.style.basic,
+    --default_style = radical.style.classic,
+    --default_item_style = radical.item.style.basic,
 }
 
 -- Toolbox
 
 theme.toolbox = blind {
     icon_transformation = toolbox_transform,
-    item_style          = radical.item.style.basic,
+   -- item_style          = radical.item.style.basic,
 --     bg                  = win9x_button_bg,
     bgimage_focus            = win9x_button_pressed,
-    style = radical.style.grouped_3d,
+    --style = radical.style.grouped_3d,
 }
 
 -- Bottom menu
@@ -277,12 +278,12 @@ theme.bottom_menu = blind {
     bgimage_used = win9x_button_bg,
     bgimage_focus=win9x_button_bg,
     spacing    = 4,
-    style = radical.style.classic,
-    item_style = radical.item.style.basic,
-    menu_item_style = radical.item.style.basic,
+    --style = radical.style.classic,
+    --item_style = radical.item.style.basic,
+    --menu_item_style = radical.item.style.basic,
 --     icon_transformation = toolbox_transform
 }
-theme.button_menu_menu_item_style = radical.item.style.basic
+--theme.button_menu_menu_item_style = radical.item.style.basic
 
 theme.bottom_menu_default_item_margins = {
     LEFT   = 5,
@@ -322,6 +323,7 @@ loadfile(theme.path .."bits/textbox/glow.lua")(theme,path)
 -- The separator theme
 require( "chopped.win9x" )
 
--- The wallpaper
-wall.centered(theme.awesome_icon, 1, "#3A6EA5")
+-- The wallpaper  TODO : loop for each screen
+wall.centered(theme.big_logo, 1, "#3A6EA5")
+wall.centered(theme.big_logo, 2, "#3A6EA5")
 return theme

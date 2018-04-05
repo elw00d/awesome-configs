@@ -19,6 +19,9 @@ require("volume")
 
 local lain = require("lain")
 
+local config = require( "forgotten"   )
+local blind     = require( "blind"     )
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -46,7 +49,30 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+
+-- Various configuration options
+config.showTitleBar  = true
+config.themeName     = "arrow"
+config.noNotifyPopup = true
+config.useListPrefix = true
+config.deviceOnDesk  = true
+config.desktopIcon   = true
+config.advTermTB     = true
+
+-- Load the theme
+config.load()
+config.themePath = awful.util.getdir("config") .. "/blind/" .. config.themeName .. "/"
+-- beautiful.init(config.themePath                .. "/themeZilla.lua")
+-- beautiful.init(config.themePath                .. "/themeIndustry.lua")
+-- beautiful.init(config.themePath                .. "/themeHolo.lua")
+-- beautiful.init(config.themePath                .. "/themePro.lua") --Unmaintained
+-- beautiful.init(config.themePath                .. "/themeProGrey.lua") --Unmaintained
+-- beautiful.init(config.themePath                .. "/theme.lua")
+-- beautiful.init(config.themePath                .. "/themeSciFi.lua")
+-- beautiful.init(config.themePath                .. "/themeSciFiGrad.lua")
+-- beautiful.init(config.themePath                .. "/themeMidnight1982.lua")
+beautiful.init(config.themePath                .. "/themeWin9x.lua")
 
 -- This is used later as the default terminal and editor to run.
 --terminal = "gnome-terminal"
@@ -524,7 +550,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+      }, properties = { titlebars_enabled = true }
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
