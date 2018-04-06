@@ -1,7 +1,7 @@
 local color      = require( "gears.color"    )
 local surface    = require( "gears.surface"  )
 local blind      = require( "blind"          )
---local radical    = require( "radical"        )
+local radical    = require( "radical"        )
 local pixmap     = require( "blind.common.pixmap")
 local pattern    = require( "blind.common.pattern2")
 local wall       = require( "gears.wallpaper" )
@@ -18,8 +18,9 @@ local theme = blind.theme
 
 local default_height = 28
 
+local bg_normal_only_color = "#D4D0C8"
 
-local bg_normal = color("#D4D0C8")
+local bg_normal = color(bg_normal_only_color)
 
 -- Win 9x fake 3D is quite simple
 local function win9x_bar_bg(context, cr, width, height)
@@ -93,15 +94,15 @@ end
 
 -- The base colors
 local fore = "#000000"
-local back = "#555555"
+local back = "#999999"
 
 theme.apps_title = "Start"
 
 -- This theme use a single color with some retro "dumb" digital dithering
--- local dit_80 = pattern() : dithering(fore, 80) : to_pattern()
--- local dit_60 = pattern() : dithering(fore, 60) : to_pattern()
--- local dit_40 = pattern() : dithering(fore, 40) : to_pattern()
--- local dit_20 = pattern() : dithering(fore, 20) : to_pattern()
+local dit_80 = pattern() : dithering(fore, 80) : to_pattern()
+local dit_60 = pattern() : dithering(fore, 60) : to_pattern()
+local dit_40 = pattern() : dithering(fore, 40) : to_pattern()
+local dit_20 = pattern() : dithering(fore, 20) : to_pattern()
 
 theme.default_height = default_height
 
@@ -113,20 +114,20 @@ theme.path = path
 -- Background
 theme.bg = blind {
     normal      = back,
-    focus       = dit_60,
-    urgent      = dit_80,
+    focus       = bg_normal,--back,
+    urgent      = '#FF0000', --dit_80,
     minimize    = dit_20,
     highlight   = dit_40,
     alternate   = dit_20,
     allinone    = back,
-    systray     = theme.fg_normal
+    systray     = bg_normal_only_color .. "00"
 }
 
 -- Wibar
 theme.wibar = blind {
     bgimage = win9x_bar_bg,
-    border_width =1,
-    border_color =fore,
+    border_width = 1,
+    border_color =fore
 }
 
 -- Forground
@@ -167,7 +168,7 @@ theme.border = blind {
 
 -- Taglist
 theme.taglist = blind {
-    --item_style    = radical.item.style.classic.vertical,
+    item_style    = radical.item.style.classic.vertical,
     bgimage = blind {
         hover     = win9x_button_bg,
         selected  = win9x_button_pressed,
@@ -192,9 +193,10 @@ theme.taglist = blind {
     item_border_color = "#00000000",
     item_border_color_focus = "#00000000",
     disable_index = true,
-    spacing = 4,
+    spacing = 1,
     icon_transformation     =  toolbox_transform,
     bg_empty = color.transparent,
+    bg_focus = dit_80 --back --color('#00ff00')
 }
 theme.taglist_default_item_margins = {
     LEFT   = 7,
@@ -211,7 +213,7 @@ theme.taglist_default_margins = {
 
 -- Tasklist
 theme.tasklist = blind {
-    --item_style              = radical.item.style.basic,
+    item_style              = radical.item.style.basic,
     fg_focus                = "#000000",
     fg_hover                = back,
     underlay_bg_urgent      = dit_20,
@@ -258,18 +260,18 @@ theme.menu = blind {
     bgimage_normal    = win9x_button_bg,
     bg_highlight = dit_40,
     border_color = fore,
-    --default_style = radical.style.classic,
-    --default_item_style = radical.item.style.basic,
+    default_style = radical.style.classic,
+    default_item_style = radical.item.style.basic,
 }
 
 -- Toolbox
 
 theme.toolbox = blind {
     icon_transformation = toolbox_transform,
-   -- item_style          = radical.item.style.basic,
+    item_style          = radical.item.style.basic,
 --     bg                  = win9x_button_bg,
     bgimage_focus            = win9x_button_pressed,
-    --style = radical.style.grouped_3d,
+    style = radical.style.grouped_3d,
 }
 
 -- Bottom menu
@@ -278,12 +280,12 @@ theme.bottom_menu = blind {
     bgimage_used = win9x_button_bg,
     bgimage_focus=win9x_button_bg,
     spacing    = 4,
-    --style = radical.style.classic,
-    --item_style = radical.item.style.basic,
-    --menu_item_style = radical.item.style.basic,
+    style = radical.style.classic,
+    item_style = radical.item.style.basic,
+    menu_item_style = radical.item.style.basic,
 --     icon_transformation = toolbox_transform
 }
---theme.button_menu_menu_item_style = radical.item.style.basic
+theme.button_menu_menu_item_style = radical.item.style.basic
 
 theme.bottom_menu_default_item_margins = {
     LEFT   = 5,
@@ -307,6 +309,8 @@ theme.systray_margins_bottom = 4
 theme.systray_margins_left   = 4
 theme.systray_margins_right  = 4
 
+--theme.bg_systray = bg_normal_only_color .. "00"
+
 -- Dock
 -- theme.dock_icon_transformation = function(img) return pixmap(img) : colorize(fore) : to_img() end
 
@@ -325,5 +329,5 @@ require( "chopped.win9x" )
 
 -- The wallpaper  TODO : loop for each screen
 wall.centered(theme.big_logo, 1, "#3A6EA5")
-wall.centered(theme.big_logo, 2, "#3A6EA5")
+--wall.centered(theme.big_logo, 2, "#3A6EA5")
 return theme
