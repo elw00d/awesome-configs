@@ -103,8 +103,8 @@ local function add_icon(state,type,icon_path)
     win9x_button_bg({}, cr, height-5, height-6)
     local sur = surface(icon_path or (path .."Icon/titlebar_classic/".. type ..".png"))
     color.apply_mask(sur, "#000000")
-    cr:scale(0.7,0.7)
-    cr:set_source_surface(sur, 3, 3)
+    --cr:scale(0.7,0.7)
+    cr:set_source_surface(sur, 2, 2)
     cr:paint()
     return img
 end

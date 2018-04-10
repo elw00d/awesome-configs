@@ -126,7 +126,7 @@ theme.bg = blind {
 -- Wibar
 theme.wibar = blind {
     bgimage = win9x_bar_bg,
-    border_width = 1,
+    border_width = 0,
     border_color =fore
 }
 
@@ -156,9 +156,9 @@ theme.allinone_margins = 6
 
 -- Border
 theme.border = blind {
-    width  = 0              ,
-    normal = back      ,
-    focus  = back      ,
+    width  = 1              ,
+    normal = '#777777',--back      ,
+    focus  = '#777777', --back      ,
     marked = "#91231c"      ,
 }
 
@@ -166,50 +166,57 @@ theme.border = blind {
 --     return surface.tint(surface(image),color(theme.fg_normal),theme.default_height,theme.default_height)
 -- end
 
+
 -- Taglist
-theme.taglist = blind {
-    item_style    = radical.item.style.classic.vertical,
-    bgimage = blind {
-        hover     = win9x_button_bg,
-        selected  = win9x_button_pressed,
-        used      = win9x_button_pressed,
-        changed   = win9x_button_pressed,
-        empty     = win9x_button_bg,
-        highlight = win9x_button_bg,
-    },
-    fg = blind {
-        hover     = fore,
-        selected  = fore,
-        used      = back,
-        urgent    = "#FF7777",
-        changed   = fore,
-        highlight = back,
-        prefix    = back,--theme.fg_normal,
-    },
+--theme.taglist = blind {
+--    item_style    = radical.item.style.classic.vertical,
+    --bgimage = blind {
+    --    hover     = win9x_button_bg,
+    --    selected  = win9x_button_pressed,
+    --    used      = win9x_button_pressed,
+    --    changed   = win9x_button_pressed,
+    --    empty     = win9x_button_bg,
+    --    highlight = win9x_button_bg,
+    --},
+    --fg = blind {
+    --    hover     = fore,
+    --    selected  = fore,
+    --    used      = back,
+    --    urgent    = "#FF7777",
+    --    changed   = fore,
+    --    highlight = back,
+    --    prefix    = back,--theme.fg_normal,
+    --},
 --     custom_color = function (...) d_mask(blind_pat.sur.flat_grad(...)) end,
-    default_icon       = path .."Icon/tags_invert/other.png",
-    border_width = 0,
-    border_color = "#00000000",
-    item_border_color = "#00000000",
-    item_border_color_focus = "#00000000",
-    disable_index = true,
-    spacing = 1,
-    icon_transformation     =  toolbox_transform,
-    bg_empty = color.transparent,
-    bg_focus = dit_80 --back --color('#00ff00')
-}
-theme.taglist_default_item_margins = {
-    LEFT   = 7,
-    RIGHT  = 7,
-    TOP    = 1,
-    BOTTOM = 1,
-}
-theme.taglist_default_margins = {
-    LEFT   = 2,
-    RIGHT  = 2,
-    TOP    = 2,
-    BOTTOM = 3,
-}
+    --default_icon       = path .."Icon/tags_invert/other.png",
+    --border_width = 0,
+    --border_color = "#00000000",
+    --item_border_color = "#00000000",
+    --item_border_color_focus = "#00000000",
+    --disable_index = true,
+    --spacing = 1,
+    --icon_transformation     =  toolbox_transform,
+    --bg_empty = color.transparent,
+--    bg_focus = dit_80, --back --color('#00ff00')
+--    bg_occupied = dit_20,
+--}
+
+-- Display the taglist squares
+theme.taglist_bg_focus = dit_80
+theme.taglist_bg_occupied = dit_20
+
+--theme.taglist_default_item_margins = {
+--    LEFT   = 7,
+--    RIGHT  = 7,
+--    TOP    = 1,
+--    BOTTOM = 1,
+--}
+--theme.taglist_default_margins = {
+--    LEFT   = 2,
+--    RIGHT  = 2,
+--    TOP    = 2,
+--    BOTTOM = 3,
+--}
 
 -- Tasklist
 theme.tasklist = blind {
@@ -327,7 +334,9 @@ loadfile(theme.path .."bits/textbox/glow.lua")(theme,path)
 -- The separator theme
 require( "chopped.win9x" )
 
--- The wallpaper  TODO : loop for each screen
-wall.centered(theme.big_logo, 1, "#3A6EA5")
---wall.centered(theme.big_logo, 2, "#3A6EA5")
+-- The wallpaper for each screen
+for scr in screen do
+    wall.centered(theme.big_logo, scr.index, "#3A6EA5")
+end
+
 return theme
