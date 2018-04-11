@@ -10,6 +10,8 @@ This is just my `~/.config/awesome` content.
 
 ![](https://github.com/elw00d/awesome-configs/blob/master/screenshots/4.png?raw=true)
 
+Runs on Ubuntu 16.04 with awesome 4.2 (from https://github.com/elw00d/awesome-deb-docker)
+
 Thanks to https://github.com/Elv13/awesome-configs for his Win9x theme
 
 Used battery and volume widgets from https://github.com/streetturtle/awesome-wm-widgets (with icons from https://github.com/horst3180/arc-icon-theme)
