@@ -17,7 +17,10 @@ require("awful.hotkeys_popup.keys")
 require("battery")
 require("volume")
 
-local lain = require("lain")
+--local lain = require("lain")
+
+local config = require( "forgotten"   )
+local blind     = require( "blind"     )
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -46,7 +49,30 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
+
+-- Various configuration options
+config.showTitleBar  = true
+config.themeName     = "arrow"
+config.noNotifyPopup = true
+config.useListPrefix = true
+config.deviceOnDesk  = true
+config.desktopIcon   = true
+config.advTermTB     = true
+
+-- Load the theme
+config.load()
+config.themePath = awful.util.getdir("config") .. "/blind/" .. config.themeName .. "/"
+-- beautiful.init(config.themePath                .. "/themeZilla.lua")
+-- beautiful.init(config.themePath                .. "/themeIndustry.lua")
+-- beautiful.init(config.themePath                .. "/themeHolo.lua")
+-- beautiful.init(config.themePath                .. "/themePro.lua") --Unmaintained
+-- beautiful.init(config.themePath                .. "/themeProGrey.lua") --Unmaintained
+-- beautiful.init(config.themePath                .. "/theme.lua")
+-- beautiful.init(config.themePath                .. "/themeSciFi.lua")
+-- beautiful.init(config.themePath                .. "/themeSciFiGrad.lua")
+-- beautiful.init(config.themePath                .. "/themeMidnight1982.lua")
+beautiful.init(config.themePath                .. "/themeWin9x.lua")
 
 -- This is used later as the default terminal and editor to run.
 --terminal = "gnome-terminal"
@@ -64,23 +90,23 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.max,
-    awful.layout.suit.fair,
-    --lain.layout.termfair,
-    --awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    awful.layout.suit.floating,
+    -- lain.layout.termfair,
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
     awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
-    --awful.layout.suit.max,
-    --awful.layout.suit.max.fullscreen,
-    --awful.layout.suit.magnifier,
-    awful.layout.suit.corner.nw,
+    -- awful.layout.suit.tile.bottom,
+    -- awful.layout.suit.tile.top,
+    -- awful.layout.suit.fair,
+    -- awful.layout.suit.fair.horizontal,
+    -- awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.max,
+    awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier,
+    -- awful.layout.suit.corner.nw,
     -- awful.layout.suit.corner.ne,
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
@@ -524,7 +550,7 @@ awful.rules.rules = {
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
+      }, properties = { titlebars_enabled = true }
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
