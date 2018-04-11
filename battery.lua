@@ -3,11 +3,27 @@ local awful = require("awful")
 local naughty = require("naughty")
 local watch = require("awful.widget.watch")
 
+local surface    = require( "gears.surface"      )
+local color      = require( "gears.color"        )
+local cairo      = require( "lgi"                ).cairo
+
+local height = 22 -- TODO : use systray height
+
 -- acpi sample outputs
 -- Battery 0: Discharging, 75%, 01:51:38 remaining
 -- Battery 0: Charging, 53%, 00:57:43 until charged
 
 local path_to_icons = "/usr/share/icons/Arc/status/symbolic/"
+
+local function add_icon(icon_path)
+    local img = cairo.ImageSurface.create(cairo.Format.ARGB32, height, height)
+    local cr  = cairo.Context(img)
+    local sur = surface(icon_path)
+    color.apply_mask(sur, "#333333") -- TODO : remove harcoded color
+    cr:set_source_surface(sur, 2, 1)
+    cr:paint()
+    return img
+end
 
 battery_widget = wibox.widget { 
     {
@@ -17,9 +33,12 @@ battery_widget = wibox.widget {
     },
     layout = wibox.container.margin(brightness_icon, 0, 0, 3),
     set_image = function(self, path)
-        self.icon.image = path
+        --self.icon.image = path
+	self.icon.image = add_icon(path)
     end
 }
+
+
 
 -- Popup with battery info
 battery_popup = awful.tooltip({objects = {battery_widget}})

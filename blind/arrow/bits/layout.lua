@@ -3,7 +3,7 @@ local blind      = require( "blind"          )
 
 theme.layout = blind {
     fairh           = path .."Icon/layouts/fairh.png",
-    fair            = path .."Icon/layouts/fair.png",
+    fairv           = path .."Icon/layouts/fair.png",
     floating        = path .."Icon/layouts/floating.png",
     magnifier       = path .."Icon/layouts/magnifier.png",
     max             = path .."Icon/layouts/max.png",
